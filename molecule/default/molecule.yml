@@ -1,0 +1,30 @@
+---
+# Default scenario that does not require an AWS F1 instance to run.
+
+dependency:
+  name: galaxy
+driver:
+  name: docker
+lint:
+  name: yamllint
+platforms:
+  - name: ubuntu_bionic
+    image: ubuntu:bionic
+  - name: ubuntu_xenial
+    image: ubuntu:xenial
+  - name: debian_stretch
+    image: debian:stretch
+  - name: debian_buster
+    image: debian:buster
+  - name: ubuntu_latest
+    image: ubuntu:latest
+  - name: centos_7
+    image: centos:7
+provisioner:
+  name: ansible
+  lint:
+    name: ansible-lint
+verifier:
+  name: testinfra
+  lint:
+    name: flake8
