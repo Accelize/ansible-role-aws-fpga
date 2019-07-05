@@ -10,16 +10,13 @@ lint:
 platforms:
   - name: ubuntu_bionic
     image: ubuntu:bionic
-  - name: ubuntu_xenial
-    image: ubuntu:xenial
-  - name: debian_stretch
-    image: debian:stretch
-  - name: debian_buster
-    image: debian:buster
-  - name: ubuntu_latest
-    image: ubuntu:latest
+    privileged: true
   - name: centos_7
     image: centos:7
+    privileged: true
+  - name: fedora_29
+    image: fedora:29
+    privileged: true
 provisioner:
   name: ansible
   lint:

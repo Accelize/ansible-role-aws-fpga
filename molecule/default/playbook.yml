@@ -2,4 +2,4 @@
 - name: Converge
   hosts: all
   roles:
-    - role: accelize.aws_fpga
+    - role: ansible-role-aws-fpga
