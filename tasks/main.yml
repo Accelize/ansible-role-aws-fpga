@@ -9,7 +9,8 @@
 
 - name: Get "libfpga_mgmt.so" file information
   stat:
-    path: "/usr/local/{{ usr_local_lib64.stat.exists | ternary('lib64','lib') }}/libfpga_mgmt.so"
+    path: "/usr/local/{{ usr_local_lib64.stat.exists |
+           ternary('lib64','lib') }}/libfpga_mgmt.so"
   register: libfpga_mgmt
 
 - name: Find AWS FPGA release information
@@ -43,7 +44,8 @@
 
 - name: Ensure AWS FPGA build dependencies are present [Debian]
   apt:
-    name: build-essential
+    name:
+      - build-essential
     state: present
     install_recommends: false
   retries: 10
@@ -52,7 +54,8 @@
 
 - name: Ensure AWS FPGA build dependencies are present [RedHat]
   yum:
-    name: "@Development tools"
+    name:
+      - "@Development tools"
     state: present
     install_weak_deps: false
   retries: 10
@@ -66,19 +69,30 @@
     AWS_FPGA_SDK_GROUP: "{{ aws_fpga_sdk_group }}"
     AWS_FPGA_SDK_OVERRIDE_GROUP: "{{ aws_fpga_sdk_override_group or '' }}"
   args:
-    creates: "/usr/local/{{ usr_local_lib64.stat.exists | ternary('lib64','lib') }}/libfpga_mgmt.so"
+    creates: "/usr/local/{{ usr_local_lib64.stat.exists |
+              ternary('lib64','lib') }}/libfpga_mgmt.so"
     executable: /bin/bash
   when: not libfpga_mgmt.stat.exists
 
 - name: Ensure AWS FPGA driver build dependencies are present [RedHat]
   package:
     name:
-      - kernel
-      - kernel-devel
+      - "kernel-devel-{{ ansible_kernel }}"
     state: present
   retries: 10
   delay: 1
-  when: fpga_driver is defined and ansible_os_family == 'RedHat' and not libfpga_mgmt.stat.exists
+  when: "(fpga_driver | bool) and ansible_os_family == 'RedHat' and
+         not libfpga_mgmt.stat.exists"
+
+- name: Ensure AWS FPGA driver build dependencies are present [Debian]
+  package:
+    name:
+      - "linux-headers-{{ ansible_kernel }}"
+    state: present
+  retries: 10
+  delay: 1
+  when: "(fpga_driver | bool) and ansible_os_family == 'Debian' and
+         not libfpga_mgmt.stat.exists"
 
 - name: Build and install AWS FPGA driver
   command: "{{ item }}"
@@ -88,7 +102,7 @@
     - /usr/bin/make -j
     - /usr/bin/make install
     - "/usr/sbin/modprobe {{ fpga_driver }}"
-  when: fpga_driver is defined and not libfpga_mgmt.stat.exists
+  when: (fpga_driver | bool) and not libfpga_mgmt.stat.exists
 
 - name: Clean up AWS FPGA temporary directory
   file:

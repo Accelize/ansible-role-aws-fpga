@@ -3,3 +3,5 @@
   hosts: all
   roles:
     - role: ansible-role-aws-fpga
+  vars:
+    aws_fpga_xrt: false

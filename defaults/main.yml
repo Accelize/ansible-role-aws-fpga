@@ -3,3 +3,12 @@
 aws_fpga_allow_non_root: false
 aws_fpga_sdk_group: fpgauser
 aws_fpga_sdk_override_group: false
+
+# Install Xilinx XRT
+aws_fpga_xrt: true
+
+# Xilinx XRT version to install
+xilinx_xrt_version: "2018.3"
+
+# FPGA driver to install
+fpga_driver: "{{ ( aws_fpga_xrt | bool ) | ternary('xocl', '') }}"

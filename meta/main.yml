@@ -2,7 +2,8 @@
 galaxy_info:
   role_name: aws_fpga
   author: Accelize
-  description: 'This Ansible role install the AWS FPGA runtime libraries and utilities.'
+  description: 'This Ansible role install the AWS FPGA runtimes for F1
+                instances.'
   company: Accelize
   license: Apache License 2.0
   min_ansible_version: '2.8'
@@ -14,14 +15,6 @@ galaxy_info:
       versions:
         - xenial
         - bionic
-    - name: Debian
-      versions:
-        - stretch
-        - buster
-    - name: Fedora
-      versions:
-        - 29
-        - 30
   galaxy_tags:
     - system
     - cloud
@@ -29,4 +22,9 @@ galaxy_info:
     - aws
     - amazon
     - ec2
-dependencies: []
+
+dependencies:
+  - role: accelize.xilinx_xrt
+    when: aws_fpga_xrt | bool
+    vars:
+      xilinx_xrt_aws: true
