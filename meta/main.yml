@@ -28,3 +28,4 @@ dependencies:
     when: aws_fpga_xrt | bool
     vars:
       xilinx_xrt_aws: true
+      xilinx_xrt_version: 2018.3

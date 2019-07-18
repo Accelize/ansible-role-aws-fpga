@@ -78,31 +78,35 @@
   package:
     name:
       - "kernel-devel-{{ ansible_kernel }}"
+      - elfutils-libelf-devel
     state: present
   retries: 10
   delay: 1
-  when: "(fpga_driver | bool) and ansible_os_family == 'RedHat' and
+  when: "fpga_driver != '' and ansible_os_family == 'RedHat' and
          not libfpga_mgmt.stat.exists"
 
 - name: Ensure AWS FPGA driver build dependencies are present [Debian]
   package:
     name:
       - "linux-headers-{{ ansible_kernel }}"
+      - libelf-dev
     state: present
   retries: 10
   delay: 1
-  when: "(fpga_driver | bool) and ansible_os_family == 'Debian' and
+  when: "fpga_driver != '' and ansible_os_family == 'Debian' and
          not libfpga_mgmt.stat.exists"
 
 - name: Build and install AWS FPGA driver
   command: "{{ item }}"
   args:
     chdir: "{{ aws_fpga_src.path }}/sdk/linux_kernel_drivers/{{ fpga_driver }}"
+  environment:
+    SDACCEL_DIR: "{{ aws_fpga_src.path }}/SDAccel"
   with_items:
     - /usr/bin/make -j
     - /usr/bin/make install
     - "/usr/sbin/modprobe {{ fpga_driver }}"
-  when: (fpga_driver | bool) and not libfpga_mgmt.stat.exists
+  when: fpga_driver != '' and not libfpga_mgmt.stat.exists
 
 - name: Clean up AWS FPGA temporary directory
   file:
