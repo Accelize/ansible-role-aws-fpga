@@ -13,17 +13,6 @@
            ternary('lib64','lib') }}/libfpga_mgmt.so"
   register: libfpga_mgmt
 
-- name: Find AWS FPGA release information
-  uri:
-    url: "https://api.github.com/repos/aws/aws-fpga/releases/\
-      {{ (fpga_driver_version is defined) | ternary('tags/','latest') }}\
-      {{ fpga_driver_version | default('') }}"
-    return_content: true
-  register: aws_sdk_release
-  retries: 10
-  delay: 1
-  when: not libfpga_mgmt.stat.exists
-
 - name: Create AWS FPGA source temporary directory
   tempfile:
     state: directory
@@ -33,7 +22,8 @@
 
 - name: Download and extract AWS FPGA release tarbal
   unarchive:
-    src: "{{ aws_sdk_release.json.tarball_url }}"
+    src: "https://api.github.com/repos/aws/aws-fpga/tarball/\
+          {{ aws_fpga_version | default('') }}"
     dest: "{{ aws_fpga_src.path }}"
     remote_src: true
     extra_opts: ['--strip-components=1']
@@ -82,7 +72,7 @@
     state: present
   retries: 10
   delay: 1
-  when: "fpga_driver != '' and ansible_os_family == 'RedHat' and
+  when: "aws_fpga_driver != '' and ansible_os_family == 'RedHat' and
          not libfpga_mgmt.stat.exists"
 
 - name: Ensure AWS FPGA driver build dependencies are present [Debian]
@@ -93,20 +83,22 @@
     state: present
   retries: 10
   delay: 1
-  when: "fpga_driver != '' and ansible_os_family == 'Debian' and
+  when: "aws_fpga_driver != '' and ansible_os_family == 'Debian' and
          not libfpga_mgmt.stat.exists"
 
 - name: Build and install AWS FPGA driver
   command: "{{ item }}"
   args:
-    chdir: "{{ aws_fpga_src.path }}/sdk/linux_kernel_drivers/{{ fpga_driver }}"
+    chdir: "{{ aws_fpga_src.path }}/sdk/linux_kernel_drivers/\
+            {{ aws_fpga_driver }}"
   environment:
+    # Required for XOCL
     SDACCEL_DIR: "{{ aws_fpga_src.path }}/SDAccel"
   with_items:
     - /usr/bin/make -j
     - /usr/bin/make install
-    - "/usr/sbin/modprobe {{ fpga_driver }}"
-  when: fpga_driver != '' and not libfpga_mgmt.stat.exists
+    - "/usr/sbin/modprobe {{ aws_fpga_driver }}"
+  when: aws_fpga_driver != '' and not libfpga_mgmt.stat.exists
 
 - name: Clean up AWS FPGA temporary directory
   file:

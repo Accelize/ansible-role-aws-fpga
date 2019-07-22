@@ -17,14 +17,25 @@ The role requires to be run as root on the target host.
 Role Variables
 --------------
 
-* **aws_fpga_allow_non_root**: If `true`, allow FPGA devices access to users in the group specified by *aws_fpga_sdk_group*. Default to `false`.
-* **aws_fpga_sdk_group**: Name of the group of users that can access to FPGA devices. Default to `fpgauser`. No effect if *aws_fpga_allow_non_root* is `false`.
-* **aws_fpga_sdk_override_group**: If true, do not raise error if the group specified by *aws_fpga_sdk_group* already exists. Default to `false`. No effect if *aws_fpga_allow_non_root* is `false`.
+* **aws_fpga_version**: AWS FPGA version; If not specified, use latest version available.
 
-* **fpga_driver**: FPGA driver name. If specified, install and enable the specified Linux kernel driver. See [AWS FPGA linux kernel drivers](https://github.com/aws/aws-fpga/tree/master/sdk/linux_kernel_drivers) for the list of available drivers.
+* **aws_fpga_allow_non_root**: If `true`, allow FPGA devices access to users in the group specified by *aws_fpga_sdk_group*.
+  Default to `false`.
+* **aws_fpga_sdk_group**: Name of the group of users that can access to FPGA devices.
+  Default to `fpgauser`.
+  No effect if *aws_fpga_allow_non_root* is `false`.
+* **aws_fpga_sdk_override_group**: If true, do not raise error if the group specified by *aws_fpga_sdk_group* already exists.
+  Default to `false`. No effect if *aws_fpga_allow_non_root* is `false`.
 
-* **aws_fpga_xrt**: If `true`, also install Xilinx XRT. Default to `true`.
-* **xilinx_xrt_version**: If *aws_fpga_xrt* is `true`, Xilinx XRT version to install. Default to `2018.3`.
+* **aws_fpga_xrt**: If `true`, also install Xilinx XRT.
+  Default to `true`.
+* **xilinx_xrt_version**: If *aws_fpga_xrt* is `true`, Xilinx XRT version to install.
+  Default to `2018.3`.
+
+* **aws_fpga_driver**: FPGA driver name. If specified, install and enable the specified Linux kernel driver.
+  See [AWS FPGA linux kernel drivers](https://github.com/aws/aws-fpga/tree/master/sdk/linux_kernel_drivers) for the list of available drivers.
+  If *aws_fpga_xrt* is `true`, the XOCl driver shipped with XRT is installed.
+
 
 Example Playbook
 ----------------

@@ -8,4 +8,4 @@ aws_fpga_sdk_override_group: false
 aws_fpga_xrt: true
 
 # FPGA driver to install
-fpga_driver: ''
+aws_fpga_driver: ''
