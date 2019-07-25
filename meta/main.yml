@@ -11,10 +11,10 @@ galaxy_info:
     - name: EL
       versions:
         - 7
-    - name: Ubuntu
-      versions:
-        - xenial
-        - bionic
+    #- name: Ubuntu
+    #  versions:
+    #    - xenial
+    #    - bionic
   galaxy_tags:
     - system
     - cloud
@@ -23,9 +23,10 @@ galaxy_info:
     - amazon
     - ec2
 
-dependencies:
-  - role: accelize.xilinx_xrt
-    when: aws_fpga_xrt | bool
-    vars:
-      xilinx_xrt_aws: true
-      xilinx_xrt_version: 2018.3
+dependencies: []
+  # TODO: Currently work only on CentOS 7 with a specific XRT package
+  #- role: accelize.xilinx_xrt
+  #  when: aws_fpga_xrt | bool
+  #  vars:
+  #    xilinx_xrt_aws: true
+  #    xilinx_xrt_version: 2018.3

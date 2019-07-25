@@ -32,7 +32,7 @@
   delay: 1
   when: not libfpga_mgmt.stat.exists
 
-- name: Ensure AWS FPGA build dependencies are present [Debian]
+- name: Ensure AWS FPGA build dependencies are present
   apt:
     name:
       - build-essential
@@ -42,7 +42,7 @@
   delay: 1
   when: ansible_os_family == 'Debian' and not libfpga_mgmt.stat.exists
 
-- name: Ensure AWS FPGA build dependencies are present [RedHat]
+- name: Ensure AWS FPGA build dependencies are present
   yum:
     name:
       - "@Development tools"
@@ -64,7 +64,7 @@
     executable: /bin/bash
   when: not libfpga_mgmt.stat.exists
 
-- name: Ensure AWS FPGA driver build dependencies are present [RedHat]
+- name: Ensure AWS FPGA driver build dependencies are present
   package:
     name:
       - "kernel-devel-{{ ansible_kernel }}"
@@ -75,7 +75,7 @@
   when: "aws_fpga_driver != '' and ansible_os_family == 'RedHat' and
          not libfpga_mgmt.stat.exists"
 
-- name: Ensure AWS FPGA driver build dependencies are present [Debian]
+- name: Ensure AWS FPGA driver build dependencies are present
   package:
     name:
       - "linux-headers-{{ ansible_kernel }}"
@@ -99,6 +99,36 @@
     - /usr/bin/make install
     - "/usr/sbin/modprobe {{ aws_fpga_driver }}"
   when: aws_fpga_driver != '' and not libfpga_mgmt.stat.exists
+
+- name: Download xrt/xrt-aws packages
+  get_url:
+    url: "{{ s3_dev_ami_url }}{{ aws_xrt_package }}-{{ item }}.rpm"
+    dest: "{{ aws_fpga_src.path }}/{{ aws_xrt_package }}-{{ item }}.rpm"
+  with_items:
+    - xrt
+    - aws
+  retries: 10
+  delay: 1
+  when: (aws_fpga_xrt | bool) and not libfpga_mgmt.stat.exists
+
+- name: Ensure xrt/xrt-aws packages dependencies are present
+  package:
+    name:
+      - "kernel-devel-{{ ansible_kernel }}"
+      - epel-release
+    state: present
+  retries: 10
+  delay: 1
+  when: (aws_fpga_xrt | bool) and not libfpga_mgmt.stat.exists
+
+- name: Ensure xrt/xrt-aws packages are installed
+  yum:
+    name: "{{ aws_fpga_src.path }}/{{ aws_xrt_package }}-{{ item }}.rpm"
+    state: present
+  with_items:
+    - xrt
+    - aws
+  when: (aws_fpga_xrt | bool) and not libfpga_mgmt.stat.exists
 
 - name: Clean up AWS FPGA temporary directory
   file:

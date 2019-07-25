@@ -9,3 +9,8 @@ aws_fpga_xrt: true
 
 # FPGA driver to install
 aws_fpga_driver: ''
+
+# XRT packages from AWS
+s3_dev_ami_url: "https://s3.amazonaws.com/aws-fpga-developer-ami/1.6.0/Patches/\
+                 XRT_2018_3_RC3_Patch1/"
+aws_xrt_package: xrt_201830.2.1.0_7.6.1810
