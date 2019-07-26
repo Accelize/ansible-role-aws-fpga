@@ -68,6 +68,7 @@
   package:
     name:
       - "kernel-devel-{{ ansible_kernel }}"
+      - "kernel-headers-{{ ansible_kernel }}"
       - elfutils-libelf-devel
     state: present
   retries: 10
@@ -100,6 +101,7 @@
     - "/usr/sbin/modprobe {{ aws_fpga_driver }}"
   when: aws_fpga_driver != '' and not libfpga_mgmt.stat.exists
 
+# Force the use of as specific XRT, because it is the only version that work
 - name: Download xrt/xrt-aws packages
   get_url:
     url: "{{ s3_dev_ami_url }}{{ aws_xrt_package }}-{{ item }}.rpm"
@@ -115,6 +117,7 @@
   package:
     name:
       - "kernel-devel-{{ ansible_kernel }}"
+      - "kernel-headers-{{ ansible_kernel }}"
       - epel-release
     state: present
   retries: 10
