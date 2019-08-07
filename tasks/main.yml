@@ -36,6 +36,7 @@
   apt:
     name:
       - build-essential
+      - pciutils
     state: present
     install_recommends: false
   retries: 10
@@ -46,6 +47,7 @@
   yum:
     name:
       - "@Development tools"
+      - pciutils
     state: present
     install_weak_deps: false
   retries: 10
