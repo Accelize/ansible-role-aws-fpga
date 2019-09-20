@@ -12,7 +12,10 @@ An AWS F1 instance is required as target host for this role.
 
 The role requires to be run as root on the target host.
 
-**accelize.xilinx_xrt** role if required to install Xilinx XRT.
+CentOS 7 is recommanded since it the only one officially tested by Xilinx/AWS.
+
+**accelize.xilinx_xrt** role if required to install Xilinx XRT on non CentOS 7
+systems.
 
 Role Variables
 --------------
@@ -30,7 +33,7 @@ Role Variables
 * **aws_fpga_xrt**: If `true`, also install Xilinx XRT.
   Default to `true`.
 * **xilinx_xrt_version**: If *aws_fpga_xrt* is `true`, Xilinx XRT version to install.
-  Default to `2018.3`.
+  Default to `2019.1`.
 
 * **aws_fpga_driver**: FPGA driver name. If specified, install and enable the specified Linux kernel driver.
   See [AWS FPGA linux kernel drivers](https://github.com/aws/aws-fpga/tree/master/sdk/linux_kernel_drivers) for the list of available drivers.
