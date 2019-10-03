@@ -19,3 +19,12 @@ xilinx_xrt_packages:
 
 s3_dev_ami_url: "https://aws-fpga-developer-ami.s3.amazonaws.com/"
 xrt_package: "{{ xilinx_xrt_packages[xilinx_xrt_version | string] }}"
+
+# Linux kernel version compatibles with AWS XRT
+# From https://github.com/aws/aws-fpga/blob/master/RELEASE_NOTES.md
+xilinx_xrt_ensure_compatible_kernel: true
+aws_xrt_kernels:
+  '2019.1': 3.10.0-957
+  '2018.3': 3.10.0-957
+  '2018.2': 3.10.0-957
+aws_linux_kernel_version: "{{ aws_xrt_kernels[xilinx_xrt_version | string] }}"

@@ -34,6 +34,7 @@ Role Variables
   Default to `true`.
 * **xilinx_xrt_version**: If *aws_fpga_xrt* is `true`, Xilinx XRT version to install.
   Default to `2019.1`.
+* **xilinx_xrt_ensure_compatible_kernel**: If `true`, ensure the Linux kernel installed is compatible. Default to `true`.
 
 * **aws_fpga_driver**: FPGA driver name. If specified, install and enable the specified Linux kernel driver.
   See [AWS FPGA linux kernel drivers](https://github.com/aws/aws-fpga/tree/master/sdk/linux_kernel_drivers) for the list of available drivers.

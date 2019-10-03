@@ -5,3 +5,5 @@
     - role: ansible-role-aws-fpga
   vars:
     aws_fpga_xrt: false
+    xilinx_xrt_ensure_compatible_kernel: false
+    reboot_on_kernel_update: false
