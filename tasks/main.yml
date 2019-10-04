@@ -77,12 +77,9 @@
   delay: 1
   when: (aws_fpga_xrt | bool) and not libfpga_mgmt.stat.exists
 
-- name: Ensure xrt/xrt-aws packages dependencies are present
+- name: Ensure EPEL repository is present
   package:
-    name:
-      - "kernel-devel-{{ ansible_kernel }}"
-      - "kernel-headers-{{ ansible_kernel }}"
-      - epel-release
+    name: epel-release
     state: present
   retries: 10
   delay: 1
@@ -99,10 +96,7 @@
 
 - name: Ensure AWS FPGA driver build dependencies are present
   package:
-    name:
-      - "kernel-devel-{{ ansible_kernel }}"
-      - "kernel-headers-{{ ansible_kernel }}"
-      - elfutils-libelf-devel
+    name: elfutils-libelf-devel
     state: present
   retries: 10
   delay: 1
@@ -111,9 +105,7 @@
 
 - name: Ensure AWS FPGA driver build dependencies are present
   package:
-    name:
-      - "linux-headers-{{ ansible_kernel }}"
-      - libelf-dev
+    name: libelf-dev
     state: present
   retries: 10
   delay: 1
