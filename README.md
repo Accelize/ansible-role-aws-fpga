@@ -29,6 +29,7 @@ Role Variables
   No effect if *aws_fpga_allow_non_root* is `false`.
 * **aws_fpga_sdk_override_group**: If true, do not raise error if the group specified by *aws_fpga_sdk_group* already exists.
   Default to `false`. No effect if *aws_fpga_allow_non_root* is `false`.
+* **aws_fpga_src_install**: If specified, install AWS FPGA sources in the specified directory.
 
 * **aws_fpga_xrt**: If `true`, also install Xilinx XRT.
   Default to `true`.
