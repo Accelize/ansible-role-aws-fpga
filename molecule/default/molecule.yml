@@ -25,10 +25,6 @@ provisioner:
   name: ansible
   lint:
     name: ansible-lint
-  inventory:
-    host_vars:
-      centos_7:
-        aws_fpga_src_install: /opt/aws_fpga
 
 verifier:
   name: testinfra
