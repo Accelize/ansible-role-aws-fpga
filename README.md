@@ -1,13 +1,11 @@
-[![Build Status](https://travis-ci.org/Accelize/ansible-role-aws-fpga.svg?branch=master)](https://travis-ci.org/Accelize/ansible-role-aws-fpga)
+:warning: **This role is deprecated and as been merged inside the "accelize.xilinx_xrt" role**
+
+**To handle the backward compatibility, this role now act as a redirection**
 
 AWS FPGA Ansible Role
 =====================
 
 This Ansible role install the [AWS FPGA](https://github.com/aws/aws-fpga) runtime libraries and utilities that are required to run FPGA devices based application on AWS F1 instances.
-
-**This role is deprecated and as been merged inside the "accelize.xilinx_xrt" role**
-
-**To handle the backward compatibility, this role now act as a redirection**
 
 Requirements
 ------------
